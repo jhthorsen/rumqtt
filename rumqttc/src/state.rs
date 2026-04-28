@@ -414,8 +414,10 @@ impl MqttState {
             return Err(StateError::EmptySubscription);
         }
 
-        let pkid = self.next_pkid();
-        subscription.pkid = pkid;
+        if subscription.pkid == 0 {
+            let pkid = self.next_pkid();
+            subscription.pkid = pkid;
+        }
 
         debug!(
             "Subscribe. Topics = {:?}, Pkid = {:?}",
