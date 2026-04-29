@@ -434,8 +434,10 @@ impl MqttState {
         &mut self,
         mut unsub: Unsubscribe,
     ) -> Result<Option<Packet>, StateError> {
-        let pkid = self.next_pkid();
-        unsub.pkid = pkid;
+        if unsub.pkid == 0 {
+            let pkid = self.next_pkid();
+            unsub.pkid = pkid;
+        }
 
         debug!(
             "Unsubscribe. Topics = {:?}, Pkid = {:?}",
